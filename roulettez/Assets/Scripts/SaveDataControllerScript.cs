@@ -6,12 +6,10 @@ public class SaveDataControllerScript : MonoBehaviour
 {
     public SaveDataContainer saveDataContainer = new SaveDataContainer();
     private FeelingSaveData saveData = new FeelingSaveData();
-    // Use this for initialization
-   
-
+    
     public void Save()
     {
-        saveData.SetDate(System.DateTime.Now);
+        saveData.date = System.DateTime.Now;
         saveData.feeling = GameObject.FindObjectOfType<GameControllerScript>().currentFeeling.feeling;
         Debug.Log("saveData" + saveData.feeling);
         try
@@ -30,8 +28,6 @@ public class SaveDataControllerScript : MonoBehaviour
             saveDataContainer.SaveDataArray = new FeelingSaveData[1];
             saveDataContainer.SaveDataArray[0] = saveData;
         }
-        
-        
         saveDataContainer.Save(Path.Combine(Application.persistentDataPath, "SaveDataContainer.xml"));
     }
 
