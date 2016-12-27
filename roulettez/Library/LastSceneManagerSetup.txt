@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/roulettescene.unity
+- path: Assets/Scenes/roulettescene.unity
   isLoaded: 1
   isActive: 1
