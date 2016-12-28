@@ -6,29 +6,33 @@ public class SaveDataControllerScript : MonoBehaviour
 {
     public SaveDataContainer saveDataContainer = new SaveDataContainer();
     private FeelingSaveData saveData = new FeelingSaveData();
-    
+
     public void Save()
     {
-        saveData.date = System.DateTime.Now;
-        saveData.feeling = GameObject.FindObjectOfType<GameControllerScript>().currentFeeling.feeling;
-        Debug.Log("saveData" + saveData.feeling);
-        try
+        FeelingInterface[] feelingsArray = GameObject.FindObjectOfType<GameControllerScript>().currentFeelings;
+        for (int j = 0; j < feelingsArray.GetLength(0); j++)
         {
-            saveDataContainer = SaveDataContainer.Load(Path.Combine(Application.persistentDataPath, "SaveDataContainer.xml"));
-            FeelingSaveData[] temp = saveDataContainer.SaveDataArray;
-            saveDataContainer.SaveDataArray = new FeelingSaveData[temp.Length + 1];
-            for (int i = 0; i < temp.Length; i++)
+            if (feelingsArray[j] == null) continue;
+            saveData.date = System.DateTime.Now;
+            saveData.feeling = feelingsArray[j].feeling;
+  
+            try
             {
-                saveDataContainer.SaveDataArray[i] = temp[i];
+                saveDataContainer = SaveDataContainer.Load(Path.Combine(Application.persistentDataPath, "SaveDataContainer.xml"));
+                FeelingSaveData[] temp = saveDataContainer.SaveDataArray;
+                saveDataContainer.SaveDataArray = new FeelingSaveData[temp.Length + 1];
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    saveDataContainer.SaveDataArray[i] = temp[i];
+                }
+                saveDataContainer.SaveDataArray[temp.Length] = saveData;
             }
-            saveDataContainer.SaveDataArray[temp.Length] = saveData;
+            catch (FileNotFoundException e)
+            {
+                saveDataContainer.SaveDataArray = new FeelingSaveData[1];
+                saveDataContainer.SaveDataArray[0] = saveData;
+            }
+            saveDataContainer.Save(Path.Combine(Application.persistentDataPath, "SaveDataContainer.xml"));
         }
-        catch (FileNotFoundException e)
-        {
-            saveDataContainer.SaveDataArray = new FeelingSaveData[1];
-            saveDataContainer.SaveDataArray[0] = saveData;
-        }
-        saveDataContainer.Save(Path.Combine(Application.persistentDataPath, "SaveDataContainer.xml"));
     }
-
 }
