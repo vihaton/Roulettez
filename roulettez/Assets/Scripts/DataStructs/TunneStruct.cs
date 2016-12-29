@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System.IO;
 using System.Collections;
 using System;
+using System.Resources;
 
 public class TunneStruct : FeelingInterface {
 
@@ -26,6 +28,15 @@ public class TunneStruct : FeelingInterface {
     int FeelingInterface.GetType()
     {
         return type;
+    }
+
+    public void Save()
+    {
+         using (System.IO.StreamWriter file = 
+            new System.IO.StreamWriter(@Application.dataPath + "/Text/feelings.csv", true))
+        {
+            file.WriteLine(this.feeling + ";" + this.type);
+        }
     }
 }
 

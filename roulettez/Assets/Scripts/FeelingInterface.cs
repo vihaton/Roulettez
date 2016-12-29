@@ -9,4 +9,5 @@ public interface FeelingInterface {
     int GetID();
     string GetFeeling();
     int GetType();
+    void Save();
 }

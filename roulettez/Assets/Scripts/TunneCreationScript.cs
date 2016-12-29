@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class TunneCreationScript : MonoBehaviour {
 
@@ -123,7 +124,31 @@ public class TunneCreationScript : MonoBehaviour {
         return readyLine;
     }
 
+
     private void GenerateFeelings()
+    {
+        for (int i = 0; i < lines.Count; i++)
+        {
+           
+            
+                FeelingInterface FI;
+                FI = new TunneStruct();
+                FI.feeling = lines[i][0];
+                if (FI.feeling.Length < 2)
+                {
+                    continue;
+                }
+                int type = Int32.Parse(lines[i][1]);
+                FI.type = type;
+                FI.id = (i + 1) * 1000;
+                listOfFeelings.Add(FI);
+                howManyFeelings++;
+                Debug.Log(FI.feeling);
+            }
+        }
+    
+
+    /*private void GenerateFeelings()
     {
         for (int i = 0; i < lines.Count; i++)
         { //jokaiselle kolmesta rivistä
@@ -149,7 +174,7 @@ public class TunneCreationScript : MonoBehaviour {
         }
 
     }
-
+    */
     /**
      * 
      * @return lista, jossa on väittämälistoja

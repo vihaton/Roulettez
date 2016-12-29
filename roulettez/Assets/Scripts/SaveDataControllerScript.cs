@@ -15,10 +15,10 @@ public class SaveDataControllerScript : MonoBehaviour
             if (feelingsArray[j] == null) continue;
             saveData.date = System.DateTime.Now;
             saveData.feeling = feelingsArray[j].feeling;
-  
+
             try
             {
-                saveDataContainer = SaveDataContainer.Load(Path.Combine(Application.persistentDataPath, "SaveDataContainer.xml"));
+                saveDataContainer = SaveDataContainer.Load(Application.persistentDataPath + "/SaveDataContainer.xml");
                 FeelingSaveData[] temp = saveDataContainer.SaveDataArray;
                 saveDataContainer.SaveDataArray = new FeelingSaveData[temp.Length + 1];
                 for (int i = 0; i < temp.Length; i++)
@@ -32,7 +32,7 @@ public class SaveDataControllerScript : MonoBehaviour
                 saveDataContainer.SaveDataArray = new FeelingSaveData[1];
                 saveDataContainer.SaveDataArray[0] = saveData;
             }
-            saveDataContainer.Save(Path.Combine(Application.persistentDataPath, "SaveDataContainer.xml"));
+            saveDataContainer.Save(Application.persistentDataPath + "/SaveDataContainer.xml");
         }
     }
 }

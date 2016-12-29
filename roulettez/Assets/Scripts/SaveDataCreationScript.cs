@@ -24,7 +24,7 @@ public class SaveDataCreationScript : MonoBehaviour {
     {
         saveDataList = GameObject.Find("SaveDataCanvas");
        
-        saveDataContainer = SaveDataContainer.Load(Path.Combine(Application.persistentDataPath, "SaveDataContainer.xml"));
+        saveDataContainer = SaveDataContainer.Load(Application.persistentDataPath + "/SaveDataContainer.xml");
         feelings = saveDataContainer.SaveDataArray;
         RectTransform rt = content.GetComponent(typeof(RectTransform)) as RectTransform;
         RectTransform rtf = FeelingButtonPrefab.GetComponent(typeof(RectTransform)) as RectTransform;
