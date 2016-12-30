@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using System;
 using System.Resources;
+using System.Collections.Generic;
 
 public class TunneStruct : FeelingInterface {
 
@@ -10,6 +11,9 @@ public class TunneStruct : FeelingInterface {
     public string feeling { get; set; }
     public int id { get; set; }
     public int type { get; set; }
+
+   
+
 
     public TunneStruct()
     {
@@ -38,5 +42,7 @@ public class TunneStruct : FeelingInterface {
             file.WriteLine(this.feeling + ";" + this.type);
         }
     }
+
+    
 }
 

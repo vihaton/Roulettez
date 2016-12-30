@@ -7,7 +7,10 @@ public class AddFeelingButtonControllerScript : MonoBehaviour {
     public Text feelingText;
     private int feelingType;
     private FeelingInterface newFeeling = new TunneStruct();
-    // Use this for initialization
+
+   private TunneCreationScript TCS;
+   private ContentCreationScript CCS;
+    
     void Start () {
         feelingType = 1;
 	}
@@ -24,10 +27,14 @@ public class AddFeelingButtonControllerScript : MonoBehaviour {
 
     public void AddFeeling()
     {
+        TCS = GameObject.FindObjectOfType<TunneCreationScript>();
+        CCS = GameObject.FindObjectOfType<ContentCreationScript>();
         newFeeling.feeling = feelingText.text;
         newFeeling.type = feelingType;
+        TCS.addToListOfFeelings(newFeeling);
         Debug.Log("FeelingType:" + feelingType);
+        CCS.deleteContent();
         newFeeling.Save();
-        
+        CCS.createContent();
     }
 }

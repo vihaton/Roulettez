@@ -17,7 +17,7 @@ public class ContentCreationScript : MonoBehaviour {
         createContent();
 	}
 
-    private void createContent()
+   public void createContent()
     {
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
 
@@ -42,8 +42,17 @@ public class ContentCreationScript : MonoBehaviour {
 
     }
 
+    public void deleteContent()
+    {
+        GameObject content = GameObject.Find("Content");
+        Button[] buttons = content.GetComponentsInChildren(typeof(Button)) as Button[];
+        int childs = content.transform.childCount;
+        for (int i = childs - 1; i >= 0; i--)
+        {
+            GameObject.Destroy(content.transform.GetChild(i).gameObject);
+        }
+    }
 
 
-    
 
 }

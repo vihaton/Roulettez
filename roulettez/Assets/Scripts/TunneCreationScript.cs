@@ -143,7 +143,7 @@ public class TunneCreationScript : MonoBehaviour {
                 FI.id = (i + 1) * 1000;
                 listOfFeelings.Add(FI);
                 howManyFeelings++;
-                Debug.Log(FI.feeling);
+                //Debug.Log(FI.feeling);
             }
         }
     
@@ -184,27 +184,33 @@ public class TunneCreationScript : MonoBehaviour {
         return listOfFeelings;
     }
 
+    public void addToListOfFeelings(FeelingInterface feel)
+    {
+        listOfFeelings.Add(feel);
+        howManyFeelings++;
+    }
+
     /**
      * Palauttaa ensimmäisen tason solmun id.tä vastaavan listan väittämistä.
      *
      * @param solmunID 0-5
      * @return lista väittämistä
      **/
-     /*
-    public ArrayList getAccusationsOfOneType(int ID)
-    {
-        if (ID == 0)
-        {
-            return (ArrayList)listOfFeelings[0];
-        }
-        return (ArrayList)listOfFeelings[ID];
-    }
+    /*
+   public ArrayList getAccusationsOfOneType(int ID)
+   {
+       if (ID == 0)
+       {
+           return (ArrayList)listOfFeelings[0];
+       }
+       return (ArrayList)listOfFeelings[ID];
+   }
 
-    public int getHowManyFeelings()
-    {
-        return howManyFeelings;
-    }
-    */
+   public int getHowManyFeelings()
+   {
+       return howManyFeelings;
+   }
+   */
 
 
 }
