@@ -36,11 +36,21 @@ public class TunneStruct : FeelingInterface {
 
     public void Save()
     {
-         using (System.IO.StreamWriter file = 
-            new System.IO.StreamWriter(@Application.dataPath + "/Text/feelings.csv", true))
+        try
         {
-            file.WriteLine(this.feeling + ";" + this.type);
+            string path = Application.dataPath + "/Text/feelings.csv";
+            using (System.IO.StreamWriter file =
+               new System.IO.StreamWriter(path, true))
+            {
+                file.WriteLine(this.feeling + ";" + this.type);
+            }
         }
+        catch (Exception e)
+        {
+            string error = e.ToString();
+            Console.WriteLine(e);
+        }
+        
     }
 
     

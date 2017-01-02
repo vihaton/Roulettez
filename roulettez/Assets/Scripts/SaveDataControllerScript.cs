@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
-
+using System;
 public class SaveDataControllerScript : MonoBehaviour
 {
     public SaveDataContainer saveDataContainer = new SaveDataContainer();
@@ -27,12 +27,21 @@ public class SaveDataControllerScript : MonoBehaviour
                 }
                 saveDataContainer.SaveDataArray[temp.Length] = saveData;
             }
-            catch (FileNotFoundException e)
+            catch (Exception e)
             {
                 saveDataContainer.SaveDataArray = new FeelingSaveData[1];
                 saveDataContainer.SaveDataArray[0] = saveData;
             }
-            saveDataContainer.Save(Application.persistentDataPath + "/SaveDataContainer.xml");
+            try
+            {
+                saveDataContainer.Save(Application.persistentDataPath + "/SaveDataContainer.xml");
+            }
+            catch (Exception e)
+            {
+
+                string error = e.ToString();
+            }
+           
         }
     }
 }

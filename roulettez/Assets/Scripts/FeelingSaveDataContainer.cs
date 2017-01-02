@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml;
+﻿using UnityEngine;
 using System.Xml.Serialization;
 using System.IO;
 
@@ -11,6 +10,7 @@ public class SaveDataContainer
 
     public void Save(string path)
     {
+        Debug.Log("SavePath" + path);
         var serializer = new XmlSerializer(typeof(SaveDataContainer));
         using (var stream = new FileStream(path, FileMode.Create))
         {
@@ -20,6 +20,7 @@ public class SaveDataContainer
 
     public static SaveDataContainer Load(string path)
     {
+        Debug.Log("LoadPath" + path);
         var serializer = new XmlSerializer(typeof(SaveDataContainer));
         using (var stream = new FileStream(path, FileMode.Open))
         {
