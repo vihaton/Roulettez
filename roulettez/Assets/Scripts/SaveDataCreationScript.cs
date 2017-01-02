@@ -23,7 +23,11 @@ public class SaveDataCreationScript : MonoBehaviour {
     public void createContent()
     {
         saveDataList = GameObject.Find("SaveDataCanvas");
-       
+        if (saveDataList.GetComponent<Canvas>().enabled == true)
+        {
+            saveDataList.GetComponent<Canvas>().enabled = false;
+            return;
+        }
         saveDataContainer = SaveDataContainer.Load(Application.persistentDataPath + "/SaveDataContainer.xml");
         feelings = saveDataContainer.SaveDataArray;
         RectTransform rt = content.GetComponent(typeof(RectTransform)) as RectTransform;

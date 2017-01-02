@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
 
@@ -7,7 +6,7 @@ public class TunneCreationScript : MonoBehaviour {
 
 
     public TextAsset accusationAsset;
-
+    public TunneStructContainer TSC = new TunneStructContainer();
     private GameControllerScript GCS;
     private List<FeelingInterface> listOfFeelings;
     private List<List<string>> lines;
@@ -22,9 +21,17 @@ public class TunneCreationScript : MonoBehaviour {
 
         lines = new List<List<string>>();
         listOfFeelings = new List<FeelingInterface>();
-
-        ReadLines(accusationData);
-        GenerateFeelings();
+        if (LoadData())
+        {
+            GenerateFeelingsFromXML();
+        }
+        else
+        {
+            ReadLines(accusationData);
+            GenerateFeelings();
+            SaveData();
+        }
+       
     }
 
     /*
@@ -40,6 +47,32 @@ public class TunneCreationScript : MonoBehaviour {
 		return data;
 	}
     */
+    private void SaveData()
+    {
+        try
+        {
+            TSC = TunneStructContainer.Load(Application.persistentDataPath + "/feelings.xml");
+            
+        }
+        catch (Exception e)
+        {
+            TSC.Save(Application.persistentDataPath + "/feelings.xml",listOfFeelings);
+        }
+    }
+
+    private bool LoadData()
+    {
+        try
+        {
+            TSC = TunneStructContainer.Load(Application.persistentDataPath + "/feelings.xml");
+            return true;
+
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 
     private void ReadLines(string data)
     {
@@ -146,7 +179,12 @@ public class TunneCreationScript : MonoBehaviour {
                 //Debug.Log(FI.feeling);
             }
         }
-    
+
+    private void GenerateFeelingsFromXML()
+    {
+        listOfFeelings.AddRange(TSC.TunneStructArray);
+    }
+
 
     /*private void GenerateFeelings()
     {
