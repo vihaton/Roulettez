@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class TunneCreationScript : MonoBehaviour {
 
 
     public TextAsset accusationAsset;
-
+    public TunneStructContainer TSC = new TunneStructContainer();
     private GameControllerScript GCS;
     private List<FeelingInterface> listOfFeelings;
     private List<List<string>> lines;
@@ -21,9 +21,17 @@ public class TunneCreationScript : MonoBehaviour {
 
         lines = new List<List<string>>();
         listOfFeelings = new List<FeelingInterface>();
-
-        ReadLines(accusationData);
-        GenerateFeelings();
+        if (LoadData())
+        {
+            GenerateFeelingsFromXML();
+        }
+        else
+        {
+            ReadLines(accusationData);
+            GenerateFeelings();
+            SaveData();
+        }
+       
     }
 
     /*
@@ -39,6 +47,32 @@ public class TunneCreationScript : MonoBehaviour {
 		return data;
 	}
     */
+    private void SaveData()
+    {
+        try
+        {
+            TSC = TunneStructContainer.Load(Application.persistentDataPath + "/feelings.xml");
+            
+        }
+        catch (Exception e)
+        {
+            TSC.Save(Application.persistentDataPath + "/feelings.xml",listOfFeelings);
+        }
+    }
+
+    private bool LoadData()
+    {
+        try
+        {
+            TSC = TunneStructContainer.Load(Application.persistentDataPath + "/feelings.xml");
+            return true;
+
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 
     private void ReadLines(string data)
     {
@@ -123,7 +157,36 @@ public class TunneCreationScript : MonoBehaviour {
         return readyLine;
     }
 
+
     private void GenerateFeelings()
+    {
+        for (int i = 0; i < lines.Count; i++)
+        {
+           
+            
+                FeelingInterface FI;
+                FI = new TunneStruct();
+                FI.feeling = lines[i][0];
+                if (FI.feeling.Length < 2)
+                {
+                    continue;
+                }
+                int type = Int32.Parse(lines[i][1]);
+                FI.type = type;
+                FI.id = (i + 1) * 1000;
+                listOfFeelings.Add(FI);
+                howManyFeelings++;
+                //Debug.Log(FI.feeling);
+            }
+        }
+
+    private void GenerateFeelingsFromXML()
+    {
+        listOfFeelings.AddRange(TSC.TunneStructArray);
+    }
+
+
+    /*private void GenerateFeelings()
     {
         for (int i = 0; i < lines.Count; i++)
         { //jokaiselle kolmesta rivistä
@@ -149,7 +212,7 @@ public class TunneCreationScript : MonoBehaviour {
         }
 
     }
-
+    */
     /**
      * 
      * @return lista, jossa on väittämälistoja
@@ -159,27 +222,33 @@ public class TunneCreationScript : MonoBehaviour {
         return listOfFeelings;
     }
 
+    public void addToListOfFeelings(FeelingInterface feel)
+    {
+        listOfFeelings.Add(feel);
+        howManyFeelings++;
+    }
+
     /**
      * Palauttaa ensimmäisen tason solmun id.tä vastaavan listan väittämistä.
      *
      * @param solmunID 0-5
      * @return lista väittämistä
      **/
-     /*
-    public ArrayList getAccusationsOfOneType(int ID)
-    {
-        if (ID == 0)
-        {
-            return (ArrayList)listOfFeelings[0];
-        }
-        return (ArrayList)listOfFeelings[ID];
-    }
+    /*
+   public ArrayList getAccusationsOfOneType(int ID)
+   {
+       if (ID == 0)
+       {
+           return (ArrayList)listOfFeelings[0];
+       }
+       return (ArrayList)listOfFeelings[ID];
+   }
 
-    public int getHowManyFeelings()
-    {
-        return howManyFeelings;
-    }
-    */
+   public int getHowManyFeelings()
+   {
+       return howManyFeelings;
+   }
+   */
 
 
 }

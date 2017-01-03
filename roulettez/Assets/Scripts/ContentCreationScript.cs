@@ -7,6 +7,7 @@ public class ContentCreationScript : MonoBehaviour {
     public List<FeelingInterface> feels;
     public GameObject FeelingButtonPrefab;
     public GameObject content;
+   
 
     private TunneCreationScript TCS;
     private TunneStruct thisFeelsMan;
@@ -17,7 +18,7 @@ public class ContentCreationScript : MonoBehaviour {
         createContent();
 	}
 
-    private void createContent()
+   public void createContent()
     {
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
 
@@ -41,6 +42,18 @@ public class ContentCreationScript : MonoBehaviour {
         }
 
     }
-    
+
+    public void deleteContent()
+    {
+        GameObject content = GameObject.Find("Content");
+        Button[] buttons = content.GetComponentsInChildren(typeof(Button)) as Button[];
+        int childs = content.transform.childCount;
+        for (int i = childs - 1; i >= 0; i--)
+        {
+            GameObject.Destroy(content.transform.GetChild(i).gameObject);
+        }
+    }
+
+
 
 }
