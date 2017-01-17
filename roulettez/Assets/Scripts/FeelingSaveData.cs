@@ -8,6 +8,6 @@ public class FeelingSaveData {
 
     [XmlAttribute("date")]
      public DateTime date;
-     public string feeling;
+     public TunneStruct feeling;
 }
 

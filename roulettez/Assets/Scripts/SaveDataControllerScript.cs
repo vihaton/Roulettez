@@ -14,7 +14,7 @@ public class SaveDataControllerScript : MonoBehaviour
         {
             if (feelingsArray[j] == null) continue;
             saveData.date = System.DateTime.Now;
-            saveData.feeling = feelingsArray[j].feeling;
+            saveData.feeling = feelingsArray[j] as TunneStruct;
 
             try
             {
