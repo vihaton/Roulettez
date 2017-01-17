@@ -42,7 +42,7 @@ public class SaveDataCreationScript : MonoBehaviour {
             tempObject.transform.SetParent(content.transform, false);
             FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
             Text textObject = tempObject.GetComponentInChildren(typeof(Text)) as Text;
-            textObject.text = feelings[i].feeling + feelings[i].date;
+            textObject.text = feelings[i].feeling.feeling + feelings[i].date;
         }
 
         saveDataList.GetComponent<Canvas>().enabled = true;
