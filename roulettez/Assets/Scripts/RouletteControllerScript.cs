@@ -10,26 +10,30 @@ public class RouletteControllerScript : MonoBehaviour {
     private Vector3 rotation;
     private bool isRotating;
     private Vector3 roulettePosition;
+    public GameObject anchor;
+    private RectTransform rectTransform;
 
     void Start () {
         sensitivity = 0.4f;
         rotation = Vector3.zero;
-        roulettePosition = new Vector3(1.9f, 0, 10);
-        transform.position = Camera.main.ViewportToWorldPoint(roulettePosition);
-        transform.localScale = new Vector3(20, 1, 20);
+        rectTransform = anchor.GetComponent<RectTransform>();
+
+
+
     }
-	
-	void Update () {
+
+    void Update () {
+        UpdatePosition();
+
         if (isRotating)
         {
             // offset
             mouseOffset = (Input.mousePosition - mouseReference);
 
             // apply rotation
-            rotation.y = -(mouseOffset.x + mouseOffset.y) * sensitivity;
+            anchor.transform.Rotate(Vector3.forward,666);
+            //anchor.transform.Rotate( 0,0,-(mouseOffset.x + mouseOffset.y) * sensitivity);
 
-            // rotate
-            transform.Rotate(rotation);
 
             // store mouse
             mouseReference = Input.mousePosition;
@@ -53,6 +57,6 @@ public class RouletteControllerScript : MonoBehaviour {
 
     public void UpdatePosition()
     {
-        transform.position = Camera.main.ViewportToWorldPoint(roulettePosition);
+       // anchor.transform.position = Camera.main.ViewportToWorldPoint(new Vector3(Screen.width * 0.75f,Screen.height*0.3f,0));
     }
 }

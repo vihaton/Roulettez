@@ -7,10 +7,18 @@ public class ContentCreationScript : MonoBehaviour {
     public List<FeelingInterface> feels;
     public GameObject feelingButtonPrefab;
     public GameObject roulette;
+    private WMG_Pie_Graph piegraph;
+    private List<float> valueList;
+    private List<string> labelList;
     private TunneCreationScript TCS;
+    private GameControllerScript GCS;
     
 	void Start () {
+        GCS = FindObjectOfType<GameControllerScript>();
+        piegraph = roulette.GetComponent<WMG_Pie_Graph>();
         feels = new List<FeelingInterface>();
+        valueList = new List<float>();
+        labelList = new List<string>();
         createContent();
 	}
 
@@ -22,18 +30,25 @@ public class ContentCreationScript : MonoBehaviour {
         float ang = 360f / (feels.Count);
         for (int i = 0; i < numberOfFeelings; i++)
         {
-            GameObject tempObject;
-            Vector3 center = new Vector3(0, -1f, 0);
-            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i);
-            Quaternion rot = transform.rotation;
-            tempObject = Instantiate(feelingButtonPrefab, pos, rot) as GameObject;
-            tempObject.transform.SetParent(roulette.transform, false);
-            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang));
-            FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
-            FBCS.feelingInterface = feels[i];
-            TextMesh textObject = tempObject.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
-            textObject.text = feels[i].GetFeeling();
+            valueList.Add(1);
+            labelList.Add(feels[i].feeling);
         }
+        
+        piegraph.sliceValues.SetList(valueList);
+        piegraph.sliceLabels.SetList(labelList);
+        piegraph.WMG_Pie_Slice_Click += clickEvent;
+        
+    }
+    void clickEvent(WMG_Pie_Graph graph, WMG_Pie_Graph_Slice slice)
+    {
+        FeelingInterface FI = feels[0];
+        foreach(FeelingInterface feel in feels)
+        {
+            if (feel.feeling.Equals(slice.name)) FI = feel;
+        }
+        GCS.UpdateCurrentFeeling(FI);
+
+
     }
 
     public void deleteContent()
