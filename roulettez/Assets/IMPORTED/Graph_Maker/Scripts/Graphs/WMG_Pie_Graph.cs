@@ -502,7 +502,7 @@ public class WMG_Pie_Graph : WMG_Graph_Manager {
 		if (!isAnimating) UpdateVisuals(false);
 	}
 
-	void sliceValuesChanged(bool editorChange, bool countChanged, bool oneValChanged, int index) {
+	internal void sliceValuesChanged(bool editorChange, bool countChanged, bool oneValChanged, int index) {
 		WMG_Util.listChanged (editorChange, ref sliceValues, ref _sliceValues, oneValChanged, index);
 		graphC.Changed ();
 	}
@@ -655,7 +655,9 @@ public class WMG_Pie_Graph : WMG_Graph_Manager {
 		}
 	}
 	
-	void UpdateVisuals(bool noAnim) {
+	internal void UpdateVisuals(bool noAnim) {
+        Debug.Log("PGS update visuals, noAnim " + noAnim + " @ " + Time.time);
+
 		// Update internal bookkeeping variables
 		UpdateData();
 
@@ -805,7 +807,19 @@ public class WMG_Pie_Graph : WMG_Graph_Manager {
 			}
 
 		}
-		legend.LegendChanged ();
+
+        //*******ADJUSTMENT*********************************
+        for (int i = 0; i < numSlices; i++)
+        {
+            WMG_Pie_Graph_Slice pieSlice = slices[i].GetComponent<WMG_Pie_Graph_Slice>();
+            if (pieSlice.slicePercent < 360 / slices.Count) //if this slice is below the average size
+            {
+                pieSlice.GetComponentInParent<Transform>().SetAsLastSibling(); //to make this slice (especially it's label) to render on top of other slices
+            }
+        }
+        //END OF ADJUSTMENT ********************************
+
+        legend.LegendChanged ();
 
 		updateAutoCenter ();
 

@@ -258,9 +258,11 @@ public class WMG_Legend : WMG_GUI_Functions {
 	private bool hasInit;
 
 	private List<WMG_Change_Obj> changeObjs = new List<WMG_Change_Obj>();
-	public WMG_Change_Obj legendC = new WMG_Change_Obj();
+    public WMG_Change_Obj legendC = new WMG_Change_Obj();
 
-	public void Init() {
+
+
+    public void Init() {
 		if (hasInit) return;
 		hasInit = true;
 

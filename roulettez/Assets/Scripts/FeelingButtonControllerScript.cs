@@ -1,19 +1,57 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class FeelingButtonControllerScript : MonoBehaviour {
 
     public FeelingInterface feelingInterface;
     private GameControllerScript GCS;
+    private float sensitivity;
+    private Vector3 mouseReference;
+    private Vector3 mouseOffset;
+    private Vector3 rotation;
+    private bool isRotating;
 
     void Start()
     {
+        sensitivity = 0.4f;
+        rotation = Vector3.zero;
         GCS = GameObject.FindObjectOfType<GameControllerScript>();
     }
 
-    public void ChooseThisFeeling()
+    void Update()
+    {
+        if (isRotating)
+        {
+            // offset
+            mouseOffset = (Input.mousePosition - mouseReference);
+
+            // apply rotation
+            rotation.y = -(mouseOffset.x + mouseOffset.y) * sensitivity;
+
+            // rotate
+            transform.parent.Rotate(rotation);
+
+            // store mouse
+            mouseReference = Input.mousePosition;
+        }
+    }
+
+    void OnMouseDown()
+    {
+        // rotating flag
+        isRotating = true;
+
+        // store mouse
+        mouseReference = Input.mousePosition;
+    }
+
+    void OnMouseUp()
+    {
+        // rotating flag
+        isRotating = false;
+    }
+
+    void OnMouseUpAsButton()
     {
         GCS.UpdateCurrentFeeling(feelingInterface);
     }
-
 }
