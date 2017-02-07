@@ -5,14 +5,10 @@ using UnityEngine.UI;
 public class ContentCreationScript : MonoBehaviour {
     
     public List<FeelingInterface> feels;
-    public GameObject FeelingButtonPrefab;
-    public GameObject content;
-   
-
+    public GameObject feelingButtonPrefab;
+    public GameObject roulette;
     private TunneCreationScript TCS;
-    private TunneStruct thisFeelsMan;
     
-	// Use this for initialization
 	void Start () {
         feels = new List<FeelingInterface>();
         createContent();
@@ -21,39 +17,41 @@ public class ContentCreationScript : MonoBehaviour {
    public void createContent()
     {
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
-
         feels = TCS.getListOfFeelings();
-        RectTransform rt = content.GetComponent(typeof(RectTransform)) as RectTransform;
-        RectTransform rtf = FeelingButtonPrefab.GetComponent(typeof(RectTransform)) as RectTransform;
-        rt.sizeDelta = new Vector2(rt.sizeDelta.x, feels.Count * (rtf.GetComponent<LayoutElement>().minHeight + 2 * rt.GetComponent<VerticalLayoutGroup>().spacing));
-
-        for (int i = 0; i < feels.Count; i++)
+        int numberOfFeelings = feels.Count;
+        float ang = 360f / (feels.Count);
+        for (int i = 0; i < numberOfFeelings; i++)
         {
             GameObject tempObject;
-            tempObject = Instantiate(FeelingButtonPrefab, FeelingButtonPrefab.transform.position, FeelingButtonPrefab.transform.rotation) as GameObject;
-            tempObject.transform.SetParent(content.transform, false);
-            
+            Vector3 center = new Vector3(0, -1f, 0);
+            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i);
+            Quaternion rot = transform.rotation;
+            tempObject = Instantiate(feelingButtonPrefab, pos, rot) as GameObject;
+            tempObject.transform.SetParent(roulette.transform, false);
+            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang));
             FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
-
             FBCS.feelingInterface = feels[i];
-
-            Text textObject = tempObject.GetComponentInChildren(typeof(Text)) as Text;
+            TextMesh textObject = tempObject.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
             textObject.text = feels[i].GetFeeling();
         }
-
     }
 
     public void deleteContent()
     {
-        GameObject content = GameObject.Find("Content");
-        Button[] buttons = content.GetComponentsInChildren(typeof(Button)) as Button[];
-        int childs = content.transform.childCount;
+        int childs = roulette.transform.childCount;
         for (int i = childs - 1; i >= 0; i--)
         {
-            GameObject.Destroy(content.transform.GetChild(i).gameObject);
+            GameObject.Destroy(roulette.transform.GetChild(i).gameObject);
         }
     }
 
-
-
+    Vector3 GetButtonPosition(Vector3 center, float radius, float ang)
+    {
+        Vector3 pos;
+        float a = ang + 90;
+        pos.x = center.x - radius * Mathf.Sin(a * Mathf.Deg2Rad);
+        pos.y = center.y;
+        pos.z = center.z - radius * Mathf.Cos(a * Mathf.Deg2Rad);
+        return pos;
+    }
 }
