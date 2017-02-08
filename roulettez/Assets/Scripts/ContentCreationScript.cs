@@ -6,6 +6,9 @@ public class ContentCreationScript : MonoBehaviour {
     
     public List<FeelingInterface> feels;
     public GameObject feelingButtonPrefab;
+    public GameObject PositiveButtonPrefab;
+    public GameObject NegativeButtonPrefab;
+    public GameObject NeutralButtonPrefab;
     public GameObject roulette;
     private TunneCreationScript TCS;
     
@@ -14,12 +17,12 @@ public class ContentCreationScript : MonoBehaviour {
         createContent();
 	}
 
-   public void createContent()
+   public void createContent(FeelingType feelingType)
     {
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
-        feels = TCS.getListOfFeelings();
+        feels = TCS.getListOfFeelings().FindAll(feeling=>feeling.GetType().Equals(feelingType));
         int numberOfFeelings = feels.Count;
-        float ang = 360f / (feels.Count);
+        float ang = 360f / (numberOfFeelings);
         for (int i = 0; i < numberOfFeelings; i++)
         {
             GameObject tempObject;
@@ -35,6 +38,27 @@ public class ContentCreationScript : MonoBehaviour {
             textObject.text = feels[i].GetFeeling();
         }
     }
+
+    public void createContent()
+    {
+        int numberOfSectors = 3;
+        float ang = 360f / (numberOfSectors);
+        for (int i = 0; i < numberOfSectors; i++)
+        {
+            GameObject tempObject;
+            Vector3 center = new Vector3(0, -1f, 0);
+            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i);
+            Quaternion rot = transform.rotation;
+            if(i==0) tempObject = Instantiate(PositiveButtonPrefab, pos, rot) as GameObject;
+            else if (i == 1) tempObject = Instantiate(NegativeButtonPrefab, pos, rot) as GameObject;
+            else tempObject = Instantiate(NeutralButtonPrefab, pos, rot) as GameObject;
+
+            tempObject.transform.SetParent(roulette.transform, false);
+            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang));
+        }
+    }
+
+
 
     public void deleteContent()
     {

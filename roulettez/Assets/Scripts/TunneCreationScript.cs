@@ -172,7 +172,7 @@ public class TunneCreationScript : MonoBehaviour {
                     continue;
                 }
                 int type = Int32.Parse(lines[i][1]);
-                FI.type = type;
+                FI.type = (FeelingType)type;
                 FI.id = (i + 1) * 1000;
                 listOfFeelings.Add(FI);
                 howManyFeelings++;

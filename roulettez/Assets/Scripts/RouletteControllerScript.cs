@@ -9,17 +9,19 @@ public class RouletteControllerScript : MonoBehaviour {
     private Vector3 mouseOffset;
     private Vector3 rotation;
     private bool isRotating;
-    private Vector3 roulettePosition;
+    private Vector3 rouletteViewPortPosition;
+    public Camera camera;   
 
     void Start () {
         sensitivity = 0.4f;
         rotation = Vector3.zero;
-        roulettePosition = new Vector3(1.9f, 0, 10);
-        transform.position = Camera.main.ViewportToWorldPoint(roulettePosition);
-        transform.localScale = new Vector3(20, 1, 20);
+        rouletteViewPortPosition = new Vector3(1f, 0f, 10);
+        transform.position = camera.ViewportToWorldPoint(rouletteViewPortPosition);
+        transform.localScale = new Vector3(10, 1, 10);
     }
 	
 	void Update () {
+        transform.position = camera.ViewportToWorldPoint(rouletteViewPortPosition);
         if (isRotating)
         {
             // offset
@@ -53,6 +55,6 @@ public class RouletteControllerScript : MonoBehaviour {
 
     public void UpdatePosition()
     {
-        transform.position = Camera.main.ViewportToWorldPoint(roulettePosition);
+        transform.position = Camera.main.ViewportToWorldPoint(rouletteViewPortPosition);
     }
 }

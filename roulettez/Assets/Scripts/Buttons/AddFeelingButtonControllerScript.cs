@@ -32,7 +32,7 @@ public class AddFeelingButtonControllerScript : MonoBehaviour {
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
         CCS = GameObject.FindObjectOfType<ContentCreationScript>();
         newFeeling.feeling = feelingText.text;
-        newFeeling.type = feelingType;
+        newFeeling.type = (FeelingType)feelingType;
         newFeeling.id = TCS.getListOfFeelings().Capacity * 1000;
         TCS.addToListOfFeelings(newFeeling);
         Debug.Log("FeelingType:" + feelingType);

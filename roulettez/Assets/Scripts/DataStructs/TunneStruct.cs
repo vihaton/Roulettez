@@ -5,7 +5,7 @@ public class TunneStruct : FeelingInterface
 
     public string feeling { get; set; }
     public int id { get; set; }
-    public int type { get; set; }
+    public FeelingType type { get; set; }
 
 
 
@@ -23,7 +23,7 @@ public class TunneStruct : FeelingInterface
         return id;
     }
 
-    int FeelingInterface.GetType()
+    FeelingType FeelingInterface.GetType()
     {
         return type;
     }
