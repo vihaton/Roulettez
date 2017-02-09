@@ -2,6 +2,7 @@
 
 public class NegativeButtonControllerScript : MonoBehaviour {
 
+    private RouletteControllerScript RCS;
     private ContentCreationScript CCS;
     private float sensitivity;
     private Vector3 mouseReference;
@@ -14,6 +15,7 @@ public class NegativeButtonControllerScript : MonoBehaviour {
         sensitivity = 0.4f;
         rotation = Vector3.zero;
         CCS = GameObject.FindObjectOfType<ContentCreationScript>();
+        RCS = GameObject.FindObjectOfType<RouletteControllerScript>();
     }
 
     void Update()
@@ -52,6 +54,7 @@ public class NegativeButtonControllerScript : MonoBehaviour {
     void OnMouseUpAsButton()
     {
         CCS.deleteContent();
+        RCS.ResetRotation();
         CCS.createContent(FeelingType.Negative);
     }
 }

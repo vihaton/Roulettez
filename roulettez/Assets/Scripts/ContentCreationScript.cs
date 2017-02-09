@@ -9,10 +9,13 @@ public class ContentCreationScript : MonoBehaviour {
     public GameObject PositiveButtonPrefab;
     public GameObject NegativeButtonPrefab;
     public GameObject NeutralButtonPrefab;
+    public GameObject PlankButtonPrefab;
     public GameObject roulette;
     private TunneCreationScript TCS;
-    
-	void Start () {
+    private RouletteControllerScript RCS;
+
+    void Start () {
+        RCS = GameObject.FindObjectOfType<RouletteControllerScript>();
         feels = new List<FeelingInterface>();
         createContent();
 	}
@@ -22,21 +25,33 @@ public class ContentCreationScript : MonoBehaviour {
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
         feels = TCS.getListOfFeelings().FindAll(feeling=>feeling.GetType().Equals(feelingType));
         int numberOfFeelings = feels.Count;
-        float ang = 360f / (numberOfFeelings);
-        for (int i = 0; i < numberOfFeelings; i++)
+        float ang = -360f / (10);
+        
+        for (int i = 0; i < 10; i++)
         {
             GameObject tempObject;
             Vector3 center = new Vector3(0, -1f, 0);
-            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i);
+            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i + 115);
             Quaternion rot = transform.rotation;
             tempObject = Instantiate(feelingButtonPrefab, pos, rot) as GameObject;
             tempObject.transform.SetParent(roulette.transform, false);
-            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang));
+            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang+115) );
             FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
             FBCS.feelingInterface = feels[i];
             TextMesh textObject = tempObject.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
             textObject.text = feels[i].GetFeeling();
         }
+        RCS.getFeels();
+        //for (int i = 10; i<numberOfFeelings; i++)
+        //{
+        //    GameObject tempObject;
+        //    tempObject = Instantiate(PlankButtonPrefab, new Vector3(0,0,0), transform.rotation) as GameObject;
+        //    tempObject.transform.SetParent(roulette.transform, false);
+        //    FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
+        //    FBCS.feelingInterface = feels[i];
+        //    TextMesh textObject = tempObject.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
+        //    textObject.text = feels[i].GetFeeling();
+        //}
     }
 
     public void createContent()
