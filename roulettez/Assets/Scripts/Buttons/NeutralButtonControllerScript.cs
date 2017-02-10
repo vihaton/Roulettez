@@ -13,7 +13,7 @@ public class NeutralButtonControllerScript : MonoBehaviour
 
     void Start()
     {
-        sensitivity = 0.4f;
+        sensitivity = 0.1f;
         rotation = Vector3.zero;
         CCS = GameObject.FindObjectOfType<ContentCreationScript>();
         RCS = GameObject.FindObjectOfType<RouletteControllerScript>();

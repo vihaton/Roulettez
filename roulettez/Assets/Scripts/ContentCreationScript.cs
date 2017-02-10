@@ -12,10 +12,8 @@ public class ContentCreationScript : MonoBehaviour {
     public GameObject PlankButtonPrefab;
     public GameObject roulette;
     private TunneCreationScript TCS;
-    private RouletteControllerScript RCS;
 
     void Start () {
-        RCS = GameObject.FindObjectOfType<RouletteControllerScript>();
         feels = new List<FeelingInterface>();
         createContent();
 	}
@@ -31,27 +29,16 @@ public class ContentCreationScript : MonoBehaviour {
         {
             GameObject tempObject;
             Vector3 center = new Vector3(0, -1f, 0);
-            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i + 115);
+            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i + 140);
             Quaternion rot = transform.rotation;
             tempObject = Instantiate(feelingButtonPrefab, pos, rot) as GameObject;
             tempObject.transform.SetParent(roulette.transform, false);
-            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang+115) );
+            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang+140) );
             FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
             FBCS.feelingInterface = feels[i];
             TextMesh textObject = tempObject.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
             textObject.text = feels[i].GetFeeling();
         }
-        RCS.getFeels();
-        //for (int i = 10; i<numberOfFeelings; i++)
-        //{
-        //    GameObject tempObject;
-        //    tempObject = Instantiate(PlankButtonPrefab, new Vector3(0,0,0), transform.rotation) as GameObject;
-        //    tempObject.transform.SetParent(roulette.transform, false);
-        //    FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
-        //    FBCS.feelingInterface = feels[i];
-        //    TextMesh textObject = tempObject.GetComponentInChildren(typeof(TextMesh)) as TextMesh;
-        //    textObject.text = feels[i].GetFeeling();
-        //}
     }
 
     public void createContent()
@@ -67,7 +54,6 @@ public class ContentCreationScript : MonoBehaviour {
             if(i==0) tempObject = Instantiate(PositiveButtonPrefab, pos, rot) as GameObject;
             else if (i == 1) tempObject = Instantiate(NegativeButtonPrefab, pos, rot) as GameObject;
             else tempObject = Instantiate(NeutralButtonPrefab, pos, rot) as GameObject;
-
             tempObject.transform.SetParent(roulette.transform, false);
             tempObject.transform.Rotate(new Vector3(-90, 0, i * ang));
         }
