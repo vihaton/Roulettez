@@ -34,14 +34,14 @@ public class StatisticsParsingScript : MonoBehaviour {
         {
             if (i == feelings.GetLength(0) - 1)
             {
-                currentDateValue += feelings[i].feeling.type;
+                currentDateValue += (int)feelings[i].feeling.type;
                 table.Add(GetDateValue(feelings[i].date), currentDateValue);
                 break;
 
             }
             if (GetDateValue(feelings[i].date) == date.DayOfYear)
             {
-                currentDateValue += feelings[i].feeling.type;
+                currentDateValue += (int)feelings[i].feeling.type;
                 continue;
             }
             Debug.Log("Table length: " + table.Count);
