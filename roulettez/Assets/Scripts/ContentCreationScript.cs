@@ -24,16 +24,16 @@ public class ContentCreationScript : MonoBehaviour {
         feels = TCS.getListOfFeelings().FindAll(feeling=>feeling.GetType().Equals(feelingType));
         int numberOfFeelings = feels.Count;
         float ang = -360f / (10);
-        
+        float offset = 90;
         for (int i = 0; i < 10; i++)
         {
             GameObject tempObject;
             Vector3 center = new Vector3(0, -1f, 0);
-            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i + 140);
+            Vector3 pos = GetButtonPosition(center, 0.49f, ang * i + offset);
             Quaternion rot = transform.rotation;
             tempObject = Instantiate(feelingButtonPrefab, pos, rot) as GameObject;
             tempObject.transform.SetParent(roulette.transform, false);
-            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang+140) );
+            tempObject.transform.Rotate(new Vector3(-90, 0, i * ang+ offset) );
             FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
             FBCS.feelingInterface = feels[i];
             TextMesh textObject = tempObject.GetComponentInChildren(typeof(TextMesh)) as TextMesh;

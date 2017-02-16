@@ -21,17 +21,13 @@ public class TunneCreationScript : MonoBehaviour {
 
         lines = new List<List<string>>();
         listOfFeelings = new List<FeelingInterface>();
+        ReadLines(accusationData);
+        GenerateFeelings();
+        //SaveData();
         if (LoadData())
         {
             GenerateFeelingsFromXML();
         }
-        else
-        {
-            ReadLines(accusationData);
-            GenerateFeelings();
-            SaveData();
-        }
-       
     }
 
     /*
@@ -47,7 +43,7 @@ public class TunneCreationScript : MonoBehaviour {
 		return data;
 	}
     */
-    private void SaveData()
+    public void SaveData()
     {
         try
         {
@@ -183,6 +179,7 @@ public class TunneCreationScript : MonoBehaviour {
     private void GenerateFeelingsFromXML()
     {
         listOfFeelings.AddRange(TSC.TunneStructArray);
+        howManyFeelings += TSC.TunneStructArray.GetLength(0);
     }
 
 

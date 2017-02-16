@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
 
 
 public class AddFeelingButtonControllerScript : MonoBehaviour {
@@ -60,7 +61,11 @@ public class AddFeelingButtonControllerScript : MonoBehaviour {
         }
         catch (Exception e)
         {
-            Debug.Log(e.ToString());
+            TunneStructContainer TSC = new TunneStructContainer();
+            List<FeelingInterface> feelingList = new List<FeelingInterface>();
+            feelingList.Add(feeling);
+            TSC.Save(path,feelingList);
+            //Debug.Log(e.ToString());
         }
 
     }
