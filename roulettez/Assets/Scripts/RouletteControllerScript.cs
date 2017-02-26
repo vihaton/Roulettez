@@ -11,6 +11,7 @@ public class RouletteControllerScript : MonoBehaviour
     private bool isRotating;
     private Vector3 rouletteViewPortPosition;
     public Camera camera;
+    private bool isRightSide = true;
 
 
     void Start()
@@ -27,7 +28,7 @@ public class RouletteControllerScript : MonoBehaviour
 
     void Update()
     {
-        transform.position = camera.ViewportToWorldPoint(rouletteViewPortPosition);
+        //transform.position = camera.ViewportToWorldPoint(rouletteViewPortPosition);
         if (isRotating)
         {
             
@@ -35,8 +36,8 @@ public class RouletteControllerScript : MonoBehaviour
             mouseOffset = (Input.mousePosition - mouseReference);
 
             // apply rotation
-            rotation.y = -(mouseOffset.x + mouseOffset.y) * sensitivity;
-
+            if(isRightSide)rotation.y = -(mouseOffset.x + mouseOffset.y) * sensitivity;
+            else rotation.y = -(mouseOffset.x - mouseOffset.y) * sensitivity;
             // rotate
             transform.Rotate(rotation);
 
@@ -68,5 +69,41 @@ public class RouletteControllerScript : MonoBehaviour
     public void ResetRotation()
     {
         transform.rotation = Quaternion.AngleAxis(90, Vector3.right);
+    }
+
+    public void switchSide()
+    {
+        if (isRightSide)
+        {
+            int childs = transform.childCount;
+            for (int i = childs - 1; i >= 0; i--)
+            {
+                TextMesh textObject = transform.GetChild(i).GetComponent(typeof(TextMesh)) as TextMesh;
+                textObject.anchor = UnityEngine.TextAnchor.MiddleRight;
+                BoxCollider collider = transform.GetChild(i).GetComponent(typeof(BoxCollider)) as BoxCollider;
+                collider.center = new Vector3(-0.57f, 0, 0);
+                transform.GetChild(i).Rotate(0,0, 180);
+                
+            }
+            rouletteViewPortPosition = new Vector3(0, 0, 10);
+            UpdatePosition();
+            isRightSide = false;
+        }
+        else
+        {
+            int childs = transform.childCount;
+            for (int i = childs - 1; i >= 0; i--)
+            {
+                TextMesh textObject = transform.GetChild(i).GetComponent(typeof(TextMesh)) as TextMesh;
+                BoxCollider collider = transform.GetChild(i).GetComponent(typeof(BoxCollider)) as BoxCollider;
+                collider.center = new Vector3(0.73f, 0, 0);
+                textObject.anchor = UnityEngine.TextAnchor.MiddleLeft;
+                transform.GetChild(i).Rotate(0, 0, 180);
+
+            }
+            rouletteViewPortPosition = new Vector3(1f, 0f, 10);
+            UpdatePosition();
+            isRightSide = true;
+        }
     }
 }
