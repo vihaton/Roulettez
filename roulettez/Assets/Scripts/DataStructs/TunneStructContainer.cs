@@ -23,7 +23,7 @@ public class TunneStructContainer
 
     public void Save(string path, List<FeelingInterface> listOfFeelings)
     {
-        TunneStructArray = new TunneStruct[listOfFeelings.Count];
+       TunneStructArray = new TunneStruct[listOfFeelings.Count];
        for (int i = 0; i < listOfFeelings.Count; i++)
         {
             TunneStructArray[i] = (TunneStruct)listOfFeelings[i];

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class FeelingButtonControllerScript : MonoBehaviour {
 
     private int numberOfFeelings;
-    private ContentCreationScript CCS;
+    private TunneCreationScript TCS;
     public FeelingInterface feelingInterface;
     public List<FeelingInterface> feels;
     private GameControllerScript GCS;
@@ -21,15 +21,15 @@ public class FeelingButtonControllerScript : MonoBehaviour {
         sensitivity = 0.1f;
         rotation = Vector3.zero;
         GCS = GameObject.FindObjectOfType<GameControllerScript>();
-        CCS = GameObject.FindObjectOfType<ContentCreationScript>();
+        TCS = GameObject.FindObjectOfType<TunneCreationScript>();
         roulette = transform.parent.gameObject;
     }
 
     void OnTriggerExit(Collider other)
     {
-        feels = CCS.feels;
+        feels = TCS.getListOfFeelings();
         numberOfFeelings = feels.Count;
-        if (transform.position.y < other.transform.position.y)
+        if (transform.position.x < other.transform.position.x)
         {
            
             int childs = transform.parent.transform.childCount;
@@ -45,7 +45,7 @@ public class FeelingButtonControllerScript : MonoBehaviour {
             }
 
         }
-        else if (transform.position.y > other.transform.position.y)
+        else if (transform.position.x > other.transform.position.x)
         {
             int childs = transform.parent.transform.childCount;
             for (int i = 0; i < childs; i++)
