@@ -8,18 +8,14 @@ public class FeelingButtonControllerScript : MonoBehaviour {
     public FeelingInterface feelingInterface;
     public List<FeelingInterface> feels;
     private GameControllerScript GCS;
-    private float sensitivity;
-    private Vector3 mouseReference;
-    private Vector3 mouseOffset;
-    private Vector3 rotation;
-    private bool isRotating;
+
+    private Vector2 mousePrevious;
+    private Vector2 mouseCurrent;
     private GameObject roulette;
 
     void Start()
     {
         feels = new List<FeelingInterface>();
-        sensitivity = 0.1f;
-        rotation = Vector3.zero;
         GCS = GameObject.FindObjectOfType<GameControllerScript>();
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
         roulette = transform.parent.gameObject;
@@ -62,42 +58,17 @@ public class FeelingButtonControllerScript : MonoBehaviour {
         }
     }
 
-    void Update()
-    {
-        if (isRotating)
-        {
-            sensitivity = 0.02f;
-            // offset
-            mouseOffset = (Input.mousePosition - mouseReference);
-
-            // apply rotation
-            rotation.y = -(mouseOffset.x + mouseOffset.y) * sensitivity;
-
-            // rotate
-            transform.parent.Rotate(rotation);
-
-            // store mouse
-            mouseReference = Input.mousePosition;
-        }
-    }
+   
 
     void OnMouseDown()
     {
-        // rotating flag
-        isRotating = true;
-
         // store mouse
-        mouseReference = Input.mousePosition;
+       mousePrevious = Input.mousePosition;
     }
 
     void OnMouseUp()
     {
-        // rotating flag
-        isRotating = false;
-    }
-
-    void OnMouseUpAsButton()
-    {
-        GCS.UpdateCurrentFeeling(feelingInterface);
+        mouseCurrent = Input.mousePosition;
+        if (Mathf.Abs(mouseCurrent.x-mousePrevious.x)<10 && (mouseCurrent.y - mousePrevious.y)< 10) GCS.UpdateCurrentFeeling(feelingInterface);
     }
 }
