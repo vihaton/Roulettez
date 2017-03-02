@@ -128,6 +128,7 @@ public class StatisticsParsingScript : MonoBehaviour {
 
     private float FeelingValueFunction(float value)
     {
-        return Mathf.Exp(value);
+        if (value>=0) return 1 + Mathf.Log(value+1,20);
+        else return 1 - Mathf.Log(-(value-1), 20);
     }
 }
