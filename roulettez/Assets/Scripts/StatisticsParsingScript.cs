@@ -118,20 +118,16 @@ public class StatisticsParsingScript : MonoBehaviour {
         {
             Debug.Log("Entry: " + entry.Key);
             if (entry.Key < first) first = entry.Key;
-            seriesData.Add(new Vector2(entry.Key, entry.Value));
+            seriesData.Add(new Vector2(entry.Key, FeelingValueFunction(entry.Value)));
             Debug.Log("data: " + new Vector2(entry.Key, entry.Value));
         }
 
         seriesX.pointValues.SetList(seriesData);
         graph.xAxis.AxisMinValue = first;
-
-
-
-
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+    private float FeelingValueFunction(float value)
+    {
+        return Mathf.Exp(value);
+    }
 }
