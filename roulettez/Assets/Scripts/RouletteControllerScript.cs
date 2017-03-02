@@ -6,49 +6,59 @@ public class RouletteControllerScript : MonoBehaviour
 {
     private float sensitivity;
     private Vector3 mouseReference;
-    private Vector3 mouseOffset;
+    private Vector2 mouseOffset;
     private Vector3 rotation;
     private bool isRotating;
+
     private Vector3 rouletteViewPortPosition;
     public Camera camera;
     private bool isRightSide = true;
+
+    private Rigidbody2D RB;
+    private float force;
+    private float maxTorque;
+    private float torqueSens;
 
 
     void Start()
     {
         sensitivity = 0.1f;
+        maxTorque = 5000;
+        torqueSens =  50;
         rotation = Vector3.zero;
         rouletteViewPortPosition = new Vector3(1f, 0f, 10);
         transform.position = camera.ViewportToWorldPoint(rouletteViewPortPosition);
         transform.localScale = new Vector3(10, 1, 10);
-
+        RB = transform.GetComponent<Rigidbody2D>();
     }
 
-   
 
-    void Update()
+    void OnMouseDrag()
     {
-        //transform.position = camera.ViewportToWorldPoint(rouletteViewPortPosition);
-        if (isRotating)
-        {
-            
-            //Debug.Log(transform.GetChild(0).transform.rotation.eulerAngles);
-            mouseOffset = (Input.mousePosition - mouseReference);
+        mouseOffset = (Input.mousePosition - mouseReference);
 
-            // apply rotation
-            if(isRightSide)rotation.y = -(mouseOffset.x + mouseOffset.y) * sensitivity;
-            else rotation.y = -(mouseOffset.x - mouseOffset.y) * sensitivity;
-            // rotate
-            transform.Rotate(rotation);
+       
+        if (isRightSide) force = mouseOffset.x + mouseOffset.y; //Changes the force to be applied
+        else force = mouseOffset .x - mouseOffset.y;
+        
+        
+       
 
-            // store mouse
-            mouseReference = Input.mousePosition;
-        }
+        // apply rotation
+        if (isRightSide) rotation.y = -(mouseOffset.x + mouseOffset.y) * sensitivity;
+        else rotation.y = -(mouseOffset.x - mouseOffset.y) * sensitivity;
+        // rotate
+        transform.Rotate(rotation);
+
+        // store mouse
+        mouseReference = Input.mousePosition;
     }
+
 
     void OnMouseDown()
     {
         // rotating flag
+        RB.freezeRotation = true;
         isRotating = true;
 
         // store mouse
@@ -57,6 +67,9 @@ public class RouletteControllerScript : MonoBehaviour
 
     void OnMouseUp()
     {
+        RB.freezeRotation = false;
+        if(Mathf.Abs(force * torqueSens) < maxTorque) RB.AddTorque(-force * torqueSens);
+        else RB.AddTorque(-maxTorque*Mathf.Sign(force));
         // rotating flag
         isRotating = false;
     }
@@ -106,4 +119,5 @@ public class RouletteControllerScript : MonoBehaviour
             isRightSide = true;
         }
     }
+  
 }
