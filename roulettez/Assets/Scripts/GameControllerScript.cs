@@ -6,40 +6,38 @@ public class GameControllerScript : MonoBehaviour {
 
     public FeelingInterface currentFeeling;
     public FeelingInterface[] currentFeelings = new FeelingInterface[3];
-    public Text feelingText1;
-    public Text feelingText2;
-    public Text feelingText3;
-
-    // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public InputField feelingInputField1;
+    public InputField feelingInputField2;
+    public InputField feelingInputField3;
+    public InputField lastUsedInputField;
 
     public void UpdateCurrentFeeling(FeelingInterface FI)
     {
         currentFeeling = FI;
-        if (feelingText1.text == "")
+        if (feelingInputField1.text == "")
         {
             currentFeelings[0] = FI;
-            feelingText1.text = currentFeelings[0].feeling;
+            feelingInputField1.text = currentFeelings[0].feeling;
 
         }
-        else if (feelingText2.text == "")
+        else if (feelingInputField2.text == "")
         {
             currentFeelings[1] = FI;
-            feelingText2.text = currentFeelings[1].feeling;
+            feelingInputField2.text = currentFeelings[1].feeling;
 
         }
-        else if (feelingText3.text == "")
+        else if (feelingInputField3.text == "")
         {
             currentFeelings[2] = FI;
-            feelingText3.text = currentFeelings[2].feeling;
+            feelingInputField3.text = currentFeelings[2].feeling;
 
         }
+    }
+    public void UpdateLastUsed(FeelingInterface FI)
+    {
+        lastUsedInputField.text = FI.feeling;
+        if(lastUsedInputField == feelingInputField1) currentFeelings[0] = FI;
+        if (lastUsedInputField == feelingInputField2) currentFeelings[1] = FI;
+        if (lastUsedInputField == feelingInputField3) currentFeelings[2] = FI;
     }
 }

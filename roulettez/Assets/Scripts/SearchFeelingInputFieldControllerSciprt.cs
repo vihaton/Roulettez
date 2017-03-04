@@ -5,49 +5,58 @@ using UnityEngine.UI;
 public class SearchFeelingInputFieldControllerSciprt : MonoBehaviour
 {
     public List<FeelingInterface> feels;
-    public InputField feelingInputField;
-    public GameObject roulette;
     private TunneCreationScript TCS;
+    private GameControllerScript GCS;
+    public GameObject content;
+    public InputField feelingInputField;
     List<FeelingInterface> searchedFeels;
+    public GameObject feelingButtonPrefab;
+    public GameObject addFeelingButtonPrefab;
 
     void Start()
     {
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
+        GCS = GameObject.FindObjectOfType<GameControllerScript>();
         feels = TCS.getListOfFeelings();
         searchedFeels = new List<FeelingInterface>();
     }
 
     public void Search()
     {
-        Reset();
-        int childs = roulette.transform.childCount;
+        DeleteContent();
         searchedFeels.Clear();
         searchedFeels.AddRange(feels);
         searchedFeels.RemoveAll(x => !x.feeling.ToLower().StartsWith(feelingInputField.text.ToLower()));
-        int k = 0;
-        int a = -1;
-        for (int i = roulette.transform.childCount - 1; i >= 0; i--)
+        RectTransform rt = content.GetComponent(typeof(RectTransform)) as RectTransform;
+        RectTransform rtf = feelingButtonPrefab.GetComponent(typeof(RectTransform)) as RectTransform;
+        rt.sizeDelta = new Vector2(rt.sizeDelta.x, (searchedFeels.Count+1) * (rtf.GetComponent<LayoutElement>().minHeight + 2 * rt.GetComponent<VerticalLayoutGroup>().spacing));
+        for (int i = 0; i <= searchedFeels.Count - 1 ; i++)
         {
-            for (int j = 0; j < searchedFeels.Count; j++)
-            {
-                if (roulette.transform.GetChild(i).GetComponent<TextMesh>().text == searchedFeels[j].feeling) { k = 1; a = i; }
-            }
-            if (k == 0) roulette.transform.GetChild(i).GetComponent<Renderer>().enabled = false;
-            k = 0;
+            GameObject tempObject;
+            tempObject = Instantiate(feelingButtonPrefab, feelingButtonPrefab.transform.position, feelingButtonPrefab.transform.rotation) as GameObject;
+            tempObject.transform.SetParent(content.transform, false);
+            SearchedFeelingButtonControllerScript SFBCS = tempObject.GetComponent<SearchedFeelingButtonControllerScript>();
+            SFBCS.feelingInterface = searchedFeels[i];
+            Text textObject = tempObject.GetComponentInChildren(typeof(Text)) as Text;
+            textObject.text = searchedFeels[i].GetFeeling();
         }
-        if (a >= 0)
-        {
-            roulette.transform.RotateAround(transform.position, transform.forward, -roulette.transform.GetChild(a).transform.rotation.eulerAngles.z - 20);
-        }
-        RouletteControllerScript RCS = roulette.GetComponent<RouletteControllerScript>();
-        RCS.UpdatePosition();
+
     }
-    public void Reset()
+    public void ChangeLastUsed()
     {
-        int childs = roulette.transform.childCount;
-        for (int i = childs - 1; i >= 0; i--)
+        GCS.lastUsedInputField = feelingInputField;
+        if (content.transform.childCount == 2) GCS.UpdateLastUsed(content.transform.GetChild(1).gameObject.GetComponent<SearchedFeelingButtonControllerScript>().feelingInterface);
+    }
+    
+    public void DeleteContent()
+    {
+        int childs = content.transform.childCount;
+        for (int i = childs - 1; i >= 1; i--)
         {
-            roulette.transform.GetChild(i).GetComponent<Renderer>().enabled = true;
+            GameObject.Destroy(content.transform.GetChild(i).gameObject);
         }
+        RectTransform rt = content.GetComponent(typeof(RectTransform)) as RectTransform;
+        RectTransform rtf = feelingButtonPrefab.GetComponent(typeof(RectTransform)) as RectTransform;
+        rt.sizeDelta = new Vector2(rt.sizeDelta.x, (1) * (rtf.GetComponent<LayoutElement>().minHeight + 2 * rt.GetComponent<VerticalLayoutGroup>().spacing));
     }
 }

@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class RouletteControllerScript : MonoBehaviour
 {
@@ -12,24 +11,29 @@ public class RouletteControllerScript : MonoBehaviour
 
     private Vector3 rouletteViewPortPosition;
     public Camera camera;
-    private bool isRightSide = true;
+    public bool isRightSide = true;
 
     private Rigidbody2D RB;
     private float force;
     private float maxTorque;
     private float torqueSens;
 
+    public GameObject LayoutGroup;
+    private HorizontalLayoutGroup layout;
 
+    private SearchFeelingInputFieldControllerSciprt SFIFCS;
     void Start()
     {
         sensitivity = 0.1f;
         maxTorque = 5000;
-        torqueSens =  50;
+        torqueSens = 50;
         rotation = Vector3.zero;
         rouletteViewPortPosition = new Vector3(1f, 0f, 10);
         transform.position = camera.ViewportToWorldPoint(rouletteViewPortPosition);
         transform.localScale = new Vector3(10, 1, 10);
         RB = transform.GetComponent<Rigidbody2D>();
+        layout = LayoutGroup.GetComponent<HorizontalLayoutGroup>();
+        SFIFCS = GameObject.FindObjectOfType<SearchFeelingInputFieldControllerSciprt>();
     }
 
 
@@ -37,12 +41,12 @@ public class RouletteControllerScript : MonoBehaviour
     {
         mouseOffset = (Input.mousePosition - mouseReference);
 
-       
+
         if (isRightSide) force = mouseOffset.x + mouseOffset.y; //Changes the force to be applied
-        else force = mouseOffset .x - mouseOffset.y;
-        
-        
-       
+        else force = mouseOffset.x - mouseOffset.y;
+
+
+
 
         // apply rotation
         if (isRightSide) rotation.y = -(mouseOffset.x + mouseOffset.y) * sensitivity;
@@ -63,13 +67,14 @@ public class RouletteControllerScript : MonoBehaviour
 
         // store mouse
         mouseReference = Input.mousePosition;
+        SFIFCS.DeleteContent();
     }
 
     void OnMouseUp()
     {
         RB.freezeRotation = false;
-        if(Mathf.Abs(force * torqueSens) < maxTorque) RB.AddTorque(-force * torqueSens);
-        else RB.AddTorque(-maxTorque*Mathf.Sign(force));
+        if (Mathf.Abs(force * torqueSens) < maxTorque) RB.AddTorque(-force * torqueSens);
+        else RB.AddTorque(-maxTorque * Mathf.Sign(force));
         // rotating flag
         isRotating = false;
     }
@@ -95,12 +100,13 @@ public class RouletteControllerScript : MonoBehaviour
                 textObject.anchor = UnityEngine.TextAnchor.MiddleRight;
                 BoxCollider collider = transform.GetChild(i).GetComponent(typeof(BoxCollider)) as BoxCollider;
                 collider.center = new Vector3(-0.57f, 0, 0);
-                transform.GetChild(i).Rotate(0,0, 180);
-                
+                transform.GetChild(i).Rotate(0, 0, 180);
+
             }
             rouletteViewPortPosition = new Vector3(0, 0, 10);
             UpdatePosition();
             isRightSide = false;
+            layout.childAlignment = TextAnchor.LowerRight;
         }
         else
         {
@@ -117,7 +123,12 @@ public class RouletteControllerScript : MonoBehaviour
             rouletteViewPortPosition = new Vector3(1f, 0f, 10);
             UpdatePosition();
             isRightSide = true;
+            layout.childAlignment = TextAnchor.LowerLeft;
         }
     }
-  
+    public void RandomRotation()
+    {
+        RB.AddTorque(Random.Range(3000.0f, 5000.0f));
+
+    }
 }
