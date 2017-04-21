@@ -21,6 +21,7 @@ public class RouletteControllerScript : MonoBehaviour
     public GameObject LayoutGroup;
     private HorizontalLayoutGroup layout;
 
+    public GameObject feelingChanger;
     void Start()
     {
         sensitivity = 0.1f;
@@ -32,6 +33,7 @@ public class RouletteControllerScript : MonoBehaviour
         transform.localScale = new Vector3(10, 1, 10);
         RB = transform.GetComponent<Rigidbody2D>();
         layout = LayoutGroup.GetComponent<HorizontalLayoutGroup>();
+        UpdateFeelingChanger();
     }
 
 
@@ -108,10 +110,20 @@ public class RouletteControllerScript : MonoBehaviour
             isRightSide = true;
             layout.childAlignment = TextAnchor.LowerLeft;
         }
+        UpdateFeelingChanger();
     }
     public void RandomRotation()
     {
         RB.AddTorque(Random.Range(3000.0f, 5000.0f));
 
+    }
+
+    void UpdateFeelingChanger()
+    {
+        Vector3 pos = new Vector3();
+        pos.x = gameObject.transform.position.x;
+        pos.y = gameObject.transform.position.y;
+        pos.z = gameObject.transform.position.z;
+        feelingChanger.transform.position = pos;
     }
 }
