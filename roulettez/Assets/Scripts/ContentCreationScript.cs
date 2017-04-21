@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+ // this script handles the creation of roulette
 public class ContentCreationScript : MonoBehaviour {
     
     public List<FeelingInterface> feels;

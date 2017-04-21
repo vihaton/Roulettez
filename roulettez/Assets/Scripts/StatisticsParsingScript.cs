@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StatisticsParsingScript : MonoBehaviour {
+    public class StatisticsParsingScript : MonoBehaviour {
     private SaveDataContainer saveDataContainer = new SaveDataContainer();
     private FeelingSaveData[] feelings;
     private DateTime date;
@@ -22,10 +22,11 @@ public class StatisticsParsingScript : MonoBehaviour {
     {
         table = new Dictionary<int, float>();
         feelingCountsTable = new Dictionary<string, int>();
-        
-
         graph = newGraph.GetComponent<WMG_Axis_Graph>();
-        saveDataContainer = SaveDataContainer.Load(Application.persistentDataPath + "/SaveDataContainer.xml");
+        try
+        {
+            saveDataContainer = SaveDataContainer.Load(Application.persistentDataPath + "/SaveDataContainer.xml");
+       
         feelings = saveDataContainer.SaveDataArray;
         if (feelings.GetLength(0) == 0) return;
         date = feelings[0].date;
@@ -52,12 +53,14 @@ public class StatisticsParsingScript : MonoBehaviour {
         }
 
         seriesX = graph.addSeries();
-
-
         CreateTop3Table();
         UpdateGraph();
         CreateGraphStyle();
-
+        }
+        catch (Exception e)
+        {
+            
+        }
     }
 
     private int GetDateValue(DateTime date)

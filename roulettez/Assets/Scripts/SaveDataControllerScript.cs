@@ -39,7 +39,6 @@ public class SaveDataControllerScript : MonoBehaviour
             catch (Exception e)
             {
 
-                string error = e.ToString();
             }
            
         }

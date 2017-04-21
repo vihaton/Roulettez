@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+ // this script changes the feelings on the roulette dynamically as it rotates
+ // also handles updates feelings accordingly when they are clicked
 public class FeelingButtonControllerScript : MonoBehaviour {
 
     private int numberOfFeelings;

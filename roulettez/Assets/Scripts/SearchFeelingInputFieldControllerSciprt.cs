@@ -6,7 +6,6 @@ public class SearchFeelingInputFieldControllerSciprt : MonoBehaviour
 {
     public List<FeelingInterface> feels;
     private TunneCreationScript TCS;
-    private GameControllerScript GCS;
     public GameObject content;
     public InputField feelingInputField;
     List<FeelingInterface> searchedFeels;
@@ -16,7 +15,6 @@ public class SearchFeelingInputFieldControllerSciprt : MonoBehaviour
     void Start()
     {
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
-        GCS = GameObject.FindObjectOfType<GameControllerScript>();
         feels = TCS.getListOfFeelings();
         searchedFeels = new List<FeelingInterface>();
     }
@@ -35,18 +33,12 @@ public class SearchFeelingInputFieldControllerSciprt : MonoBehaviour
             GameObject tempObject;
             tempObject = Instantiate(feelingButtonPrefab, feelingButtonPrefab.transform.position, feelingButtonPrefab.transform.rotation) as GameObject;
             tempObject.transform.SetParent(content.transform, false);
-            SearchedFeelingButtonControllerScript SFBCS = tempObject.GetComponent<SearchedFeelingButtonControllerScript>();
-            SFBCS.feelingInterface = searchedFeels[i];
             Text textObject = tempObject.GetComponentInChildren(typeof(Text)) as Text;
             textObject.text = searchedFeels[i].GetFeeling();
         }
 
     }
-    public void ChangeLastUsed()
-    {
-        GCS.lastUsedInputField = feelingInputField;
-        if (content.transform.childCount == 2) GCS.UpdateLastUsed(content.transform.GetChild(1).gameObject.GetComponent<SearchedFeelingButtonControllerScript>().feelingInterface);
-    }
+    
     
     public void DeleteContent()
     {

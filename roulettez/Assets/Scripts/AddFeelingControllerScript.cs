@@ -6,18 +6,18 @@ public class AddFeelingControllerScript : MonoBehaviour
 
     public GameObject LayoutElement;
     public InputField inputField;
-    private GameControllerScript GCS;
     public void Activate()
     {
-        GCS = GameObject.FindObjectOfType<GameControllerScript>();
         LayoutElement.gameObject.SetActive(true);
-        Debug.Log(GCS.lastUsedInputField.text);
-        inputField.text = GCS.lastUsedInputField.text;
         inputField.ActivateInputField();
     }
     public void Disable()
     {
-
         LayoutElement.gameObject.SetActive(false);
+    }
+    public void SwitchActive()
+    {
+        if (LayoutElement.gameObject.activeSelf) Disable();
+        else Activate();
     }
 }

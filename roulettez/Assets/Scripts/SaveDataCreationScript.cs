@@ -11,8 +11,8 @@ public class SaveDataCreationScript : MonoBehaviour {
     public SaveDataContainer saveDataContainer = new SaveDataContainer();
     // Use this for initialization
     void Start () {
-        saveDataList = GameObject.Find("SaveDataCanvas");
-        saveDataList.GetComponent<Canvas>().enabled = false;
+        
+        
     }
 	
 	// Update is called once per frame
@@ -40,7 +40,6 @@ public class SaveDataCreationScript : MonoBehaviour {
             GameObject tempObject;
             tempObject = Instantiate(FeelingButtonPrefab, FeelingButtonPrefab.transform.position, FeelingButtonPrefab.transform.rotation) as GameObject;
             tempObject.transform.SetParent(content.transform, false);
-            FeelingButtonControllerScript FBCS = tempObject.GetComponent<FeelingButtonControllerScript>();
             Text textObject = tempObject.GetComponentInChildren(typeof(Text)) as Text;
             textObject.text = feelings[i].feeling.feeling + feelings[i].date;
         }

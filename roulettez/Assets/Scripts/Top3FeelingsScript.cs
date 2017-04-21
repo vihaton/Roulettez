@@ -37,12 +37,6 @@ public class Top3FeelingsScript : MonoBehaviour {
 
             }
         }
-
         text.text = "Your most frequent feelings are:\n\n1. " + bestList[0] + "\n 2. " + bestList[1] + "\n 3. " + bestList[2];
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }

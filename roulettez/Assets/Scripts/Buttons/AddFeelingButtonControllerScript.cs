@@ -11,17 +11,11 @@ public class AddFeelingButtonControllerScript : MonoBehaviour {
     private FeelingInterface newFeeling = new TunneStruct();
     public TunneStructContainer TSC;
     private TunneCreationScript TCS;
-   private ContentCreationScript CCS;
     
     void Start () {
         feelingType = 1;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     public void ToggleFeelingType(int type)
     {
         feelingType = type;
@@ -31,24 +25,21 @@ public class AddFeelingButtonControllerScript : MonoBehaviour {
     {
         if (feelingText.text == "") return;
         TCS = GameObject.FindObjectOfType<TunneCreationScript>();
-        CCS = GameObject.FindObjectOfType<ContentCreationScript>();
         newFeeling.feeling = feelingText.text;
         newFeeling.type = (FeelingType)feelingType;
         newFeeling.id = TCS.getListOfFeelings().Capacity * 1000;
         TCS.addToListOfFeelings(newFeeling);
-        Debug.Log("FeelingType:" + feelingType);
-        CCS.deleteContent();
+        // Debug.Log("FeelingType:" + feelingType);
         SaveFeeling(Application.persistentDataPath + "/feelings.xml", newFeeling);
-        CCS.createContent();
         inputField.text = "";
-        
     }
 
     public void SaveFeeling(string path, FeelingInterface feeling)
     {
+        // try to append new feeling to existing xml on device
+        // if there is none create one
         try
         {
-
             TSC = TunneStructContainer.Load(path);
             TunneStruct[] temp = TSC.TunneStructArray;
             TSC.TunneStructArray = new TunneStruct[temp.Length + 1];
@@ -65,7 +56,7 @@ public class AddFeelingButtonControllerScript : MonoBehaviour {
             List<FeelingInterface> feelingList = new List<FeelingInterface>();
             feelingList.Add(feeling);
             TSC.Save(path,feelingList);
-            //Debug.Log(e.ToString());
+            // Debug.Log(e.ToString());
         }
 
     }
