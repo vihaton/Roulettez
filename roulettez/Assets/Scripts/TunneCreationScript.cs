@@ -7,7 +7,6 @@ public class TunneCreationScript : MonoBehaviour {
 
     public TextAsset accusationAsset;
     public TunneStructContainer TSC = new TunneStructContainer();
-    private GameControllerScript GCS;
     private List<FeelingInterface> listOfFeelings;
     private List<List<string>> lines;
     [SerializeField]
@@ -15,7 +14,6 @@ public class TunneCreationScript : MonoBehaviour {
 
     void Awake()
     {
-        GCS = gameObject.GetComponent<GameControllerScript>();
         howManyFeelings = 0;
         string accusationData = accusationAsset.text;
 

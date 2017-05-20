@@ -10,16 +10,6 @@ public class GameControllerScript : MonoBehaviour {
     public Text feelingText2;
     public Text feelingText3;
 
-    // Use this for initialization
-    void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
     public void UpdateCurrentFeeling(FeelingInterface FI)
     {
         currentFeeling = FI;
@@ -42,4 +32,5 @@ public class GameControllerScript : MonoBehaviour {
 
         }
     }
+    
 }

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 public class CurrentFeelingControllerScript : MonoBehaviour {
 
@@ -10,11 +9,6 @@ public class CurrentFeelingControllerScript : MonoBehaviour {
     void Start () {
         GCS = GameObject.FindObjectOfType<GameControllerScript>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
     public void Reset()
     {
